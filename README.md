@@ -8,9 +8,9 @@ Shuriken was developed as an open source [Cross-Site Scripting](https://en.wikip
 It should only be used on valid targets who have consented to pentesting, **please ensure you have permission** before using this tool against a web application.
 
 ## Installation
-Shuriken can be installed by downloading the zip file here, tar file here or by cloning the Git repository:
+Shuriken can be installed by downloading the zip file [here](https://github.com/shogunlab/shuriken/archive/master.zip) or by cloning the [Git](https://github.com/shogunlab/shuriken.git) repository:
 
-`git clone https://github.com/xx/xx.git`
+`git clone https://github.com/shogunlab/shuriken.git`
 
 Shuriken works with [Python](http://www.python.org/download/) **2.7.x** on any platform.
 
