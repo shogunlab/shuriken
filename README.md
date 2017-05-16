@@ -1,5 +1,5 @@
 # Shuriken | 手裏剣
-![logo](https://i.imgur.com/hNF5cjS.png "Shuriken Logo")
+![logo](https://i.imgur.com/Jr3rbL0.png "Shuriken Logo")
 
 [![python](https://img.shields.io/badge/python-2.7-brightgreen.svg)](https://www.python.org/downloads/) [![license](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/shogunlab/shuriken/blob/master/LICENSE.md) [![twitter](https://img.shields.io/badge/twitter-%40shogun__lab-0084b4.svg)](https://twitter.com/shogun_lab)
 
@@ -53,6 +53,8 @@ With additional *--screen* option to record screenshots
 ![screen_2](https://i.imgur.com/aoxh13d.png "Shuriken Screenshot #2")
 
 ## Legal
-Shuriken was derived from the excellent XSS command line tool by Faizan Ahmad, called [XssPy](https://github.com/faizann24/XssPy). The Shuriken XSS tool is under an MIT license, you can read it [here](https://github.com/shogunlab/shuriken/blob/master/LICENSE.md). 
+Shuriken was derived from the excellent XSS command line tool by Faizan Ahmad, called [XssPy](https://github.com/faizann24/XssPy). The Shuriken XSS tool is under an MIT license, you can read it [here](https://github.com/shogunlab/shuriken/blob/master/LICENSE.md).
+
+The Shuriken logo is licensed under a [Creative Commons Attribution 3.0 United States License](http://creativecommons.org/licenses/by/3.0/us/). Authored by Monjin Friends.
 
 Be responsible and use this tool at your own discretion, I cannot be held responsible for any damages caused.
