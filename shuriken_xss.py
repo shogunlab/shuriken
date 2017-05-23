@@ -28,6 +28,9 @@ class Shuriken:
         # Get user args and store
         self.user_args = self.parse_args()
 
+        # PhantomJS browser 
+        self.browser = Browser("phantomjs")
+
     def make_sure_path_exists(self, path):
         try:
             os.makedirs(path)
@@ -36,9 +39,8 @@ class Shuriken:
                 raise
 
     def inject_payload(self, payload, link, screenshot_target):
-        # Create the PhantomJS browser and visit user
-        # supplied link with injected payload
-        browser = Browser("phantomjs")
+        # visit user supplied link with injected payload
+        browser = self.browser
 
         # Let user specify where in the URL fuzz values should be injected
         injected_link = link.replace("{xss}", payload)
