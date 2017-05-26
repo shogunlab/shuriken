@@ -115,11 +115,13 @@ class Shuriken:
                 Color.RED + injected_link + Color.END
 
     def test_xss(self, payloads_param, link, request_delay, screenshot_target):
-        # Load the payload file and inject all payloads
-        # into user supplied URL to test for XSS
+        # If the user added time delay, show them what it is set to.
         if request_delay is not None:
             print Color.YELLOW + "\n[!] Request delay is set to [" + \
                 str(request_delay) + "] seconds between requests." + Color.END
+
+        # Load the payload file and inject all payloads
+        # into user supplied URL to test for XSS
         payloads = []
         with open(payloads_param) as file:
             for line in file:
