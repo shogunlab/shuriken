@@ -49,12 +49,16 @@ This tool depends on the proper configuration and installation of the following:
 If you would prefer that this tool ***use a different browser for testing***, you can read the [Splinter docs](https://splinter.readthedocs.io/en/latest/#drivers) and insert your preferred browser in the "inject_payload" method where it says `browser = Browser("phantomjs")`. Leaving it blank as `browser = Browser()` will default to Firefox.
 
 ## Screenshots
-Basic usage
+**Basic usage**
 ![screen_1](https://i.imgur.com/yEQReEh.png "Shuriken Screenshot #1")
 
 
-With additional *--screen* option to record screenshots
+**With *--screen* option to record screenshots**
 ![screen_2](https://i.imgur.com/aoxh13d.png "Shuriken Screenshot #2")
+
+
+**With *-t* option to delay requests by specific amount**
+![screen_3](https://i.imgur.com/md9j82N.png "Shuriken Screenshot #3")
 
 ## Legal
 Shuriken was derived from the excellent XSS command line tool by Faizan Ahmad, called [XssPy](https://github.com/faizann24/XssPy). The Shuriken XSS tool is under an MIT license, you can read it [here](https://github.com/shogunlab/shuriken/blob/master/LICENSE.md).
