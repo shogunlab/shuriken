@@ -50,15 +50,11 @@ If you would prefer that this tool ***use a different browser for testing***, yo
 
 ## Screenshots
 **Basic usage**
-![screen_1](https://i.imgur.com/yEQReEh.png "Shuriken Screenshot #1")
+![screen_1](https://i.imgur.com/91dGSfS.png "Shuriken Screenshot #1")
 
 
-**With *--screen* option to record screenshots**
-![screen_2](https://i.imgur.com/aoxh13d.png "Shuriken Screenshot #2")
-
-
-**With *-t* option to delay requests by specific amount**
-![screen_3](https://i.imgur.com/md9j82N.png "Shuriken Screenshot #3")
+**With *--screen* option to record screenshots and *-t* option to delay requests by specific amount**
+![screen_2](https://i.imgur.com/md9j82N.png "Shuriken Screenshot #2")
 
 ## Legal
 Shuriken was derived from the excellent XSS command line tool by Faizan Ahmad, called [XssPy](https://github.com/faizann24/XssPy). The Shuriken XSS tool is under an MIT license, you can read it [here](https://github.com/shogunlab/shuriken/blob/master/LICENSE.md).
