@@ -35,7 +35,7 @@ If you would like to screenshot and save all reflected XSS payloads, use the *--
 
 To wait a specific amount of time in between requests, use the *-t* flag with the amount of time to wait in seconds and enter:
 
-`python shuriken_xss.py -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt" -t 1.5
+`python shuriken_xss.py -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt" -t 1.5`
 
 **You must specify a payload and URL**, if you don't then you'll get an error. For an example payload to test with, check out this list of [common XSS payloads](https://github.com/foospidy/payloads/blob/master/owasp/fuzzing_code_database/xss/common.txt).
 
