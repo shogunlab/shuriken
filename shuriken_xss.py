@@ -3,6 +3,7 @@ import sys
 import argparse
 import errno
 import os
+import time
 
 from splinter import Browser
 
@@ -40,7 +41,9 @@ class Shuriken:
             Color.END + "=" * 34 + "\n"
 
         self.test_xss(self.user_args.PAYLOADS_LIST,
-                      self.user_args.URL, self.user_args.SCREENSHOT_NAME)
+                      self.user_args.URL,
+                      self.user_args.REQUEST_DELAY,
+                      self.user_args.SCREENSHOT_NAME)
         print Color.GREEN + "\n=== Testing complete! ===\n" + Color.END
 
         # If the test found possible XSS vulnerabilities, ask if we should
@@ -64,12 +67,23 @@ class Shuriken:
             if exception.errno != errno.EEXIST:
                 raise
 
-    def inject_payload(self, payload, link, screenshot_target):
+    def inject_payload(self, payload, link, request_delay, screenshot_target):
         # Visit user supplied link with injected payload
         browser = self.browser
 
         # Let user specify where in the URL fuzz values should be injected
         injected_link = link.replace("{xss}", payload)
+
+        # If user added a delay, wait that amount of time before requesting
+        if request_delay is not None:
+            try:
+                time.sleep(float(request_delay))
+            except KeyboardInterrupt:
+                print Color.YELLOW + \
+                    "\nTesting interrupted by user!\n" + Color.END
+                self.log_file(self.xss_links)
+                sys.exit()
+
         browser.visit(injected_link)
 
         # Keep index of screens, so they can be easily
@@ -78,7 +92,7 @@ class Shuriken:
 
         # Check to see if payload was reflected in HTML source
         if payload in browser.html:
-            print Color.GREEN + "\nPotential XSS vulnerability found:" + \
+            print Color.GREEN + "\n[+] Potential XSS vulnerability found:" + \
                 Color.END
             # If user set the --screen flag to target, capture screen of
             # payload
@@ -97,19 +111,23 @@ class Shuriken:
             self.xss_links.append(injected_link)
             return Color.BLUE + injected_link + Color.END
         else:
-            return Color.YELLOW + "\nTested, but no XSS found at: \n" + \
+            return Color.YELLOW + "\n[+] Tested, but no XSS found at: \n" + \
                 Color.RED + injected_link + Color.END
 
-    def test_xss(self, payloads_param, link, screenshot_target):
+    def test_xss(self, payloads_param, link, request_delay, screenshot_target):
         # Load the payload file and inject all payloads
         # into user supplied URL to test for XSS
+        if request_delay is not None:
+            print Color.YELLOW + "\n[!] Request delay is set to [" + \
+                str(request_delay) + "] seconds between requests." + Color.END
         payloads = []
         with open(payloads_param) as file:
             for line in file:
                 line = line.strip()
                 payloads.append(line)
         for item in payloads:
-            print self.inject_payload(item, link, screenshot_target)
+            print self.inject_payload(item, link, request_delay,
+                                      screenshot_target)
 
     def log_file(self, link_list):
         # Prompt the user to confirm log file, if yes, log XSS hits
@@ -147,6 +165,9 @@ class Shuriken:
         parser.add_argument(
             '-p', action='store', dest='PAYLOADS_LIST',
             help='The payload list to use', required=True)
+        parser.add_argument(
+            '-t', action='store', dest='REQUEST_DELAY',
+            help='Amount of time in seconds to delay between requests')
         parser.add_argument(
             '--screen', action='store', dest='SCREENSHOT_NAME',
             help='Screens of target')
