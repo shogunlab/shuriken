@@ -1,8 +1,8 @@
-import datetime
-import sys
 import argparse
+import datetime
 import errno
 import os
+import sys
 import time
 
 from splinter import Browser
