@@ -3,6 +3,7 @@ import sys
 import argparse
 import errno
 import os
+
 from splinter import Browser
 
 
@@ -28,8 +29,33 @@ class Shuriken:
         # Get user args and store
         self.user_args = self.parse_args()
 
-        # PhantomJS browser 
+        # PhantomJS browser
         self.browser = Browser("phantomjs")
+
+    def main(self):
+        # Print out a welcome message
+        print "\n"
+        print "=" * 34 + Color.YELLOW + "\nWelcome to the" + Color.RED + \
+            " Shuriken " + Color.YELLOW + "XSS tool!\n" + \
+            Color.END + "=" * 34 + "\n"
+
+        self.test_xss(self.user_args.PAYLOADS_LIST,
+                      self.user_args.URL, self.user_args.SCREENSHOT_NAME)
+        print Color.GREEN + "\n=== Testing complete! ===\n" + Color.END
+
+        # If the test found possible XSS vulnerabilities, ask if we should
+        # log
+        if self.xss_links:
+            print Color.YELLOW + \
+                "Potential XSS vulnerabilities were detected!" + \
+                Color.END
+            self.log_file(self.xss_links)
+        else:
+            print Color.YELLOW + \
+                "No potential XSS vulnerabilities detected...\n" + \
+                Color.END
+            print "Goodbye!"
+            print "\n"
 
     def make_sure_path_exists(self, path):
         try:
@@ -39,7 +65,7 @@ class Shuriken:
                 raise
 
     def inject_payload(self, payload, link, screenshot_target):
-        # visit user supplied link with injected payload
+        # Visit user supplied link with injected payload
         browser = self.browser
 
         # Let user specify where in the URL fuzz values should be injected
@@ -138,37 +164,12 @@ class Shuriken:
 
         return arguments
 
-    def main(self):
-        # Print out a welcome message
-        print "\n"
-        print "=" * 34 + Color.YELLOW + "\nWelcome to the" + Color.RED + \
-            " Shuriken " + Color.YELLOW + "XSS tool!\n" + \
-            Color.END + "=" * 34 + "\n"
-
-        try:
-            self.test_xss(self.user_args.PAYLOADS_LIST,
-                          self.user_args.URL, self.user_args.SCREENSHOT_NAME)
-            print Color.GREEN + "\n=== Testing complete! ===\n" + Color.END
-
-            # If the test found possible XSS vulnerabilities, ask if we should
-            # log
-            if self.xss_links:
-                print Color.YELLOW + \
-                    "Potential XSS vulnerabilities were detected!" + \
-                    Color.END
-                self.log_file(self.xss_links)
-            else:
-                print Color.YELLOW + \
-                    "No potential XSS vulnerabilities detected...\n" + \
-                    Color.END
-                print "Goodbye!"
-                print "\n"
-        except KeyboardInterrupt:
-            print Color.YELLOW + \
-                "\nTesting interrupted by user!\n" + Color.END
-            self.log_file(self.xss_links)
-            sys.exit()
-
 
 if __name__ == "__main__":
-    Shuriken().main()
+    try:
+        Shuriken().main()
+    except KeyboardInterrupt:
+        print Color.YELLOW + \
+            "\nTesting interrupted by user!\n" + Color.END
+        Shuriken().log_file(Shuriken().xss_links)
+        sys.exit()
