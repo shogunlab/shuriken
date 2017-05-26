@@ -75,6 +75,8 @@ class Shuriken:
         injected_link = link.replace("{xss}", payload)
 
         # If user added a delay, wait that amount of time before requesting
+        # Also, if user wants to interrupt/exit during wait time,
+        # let them log before leaving
         if request_delay is not None:
             try:
                 time.sleep(float(request_delay))
@@ -176,7 +178,7 @@ class Shuriken:
 
         arguments = parser.parse_args()
 
-        # Check for existence of {xss} injection point in URL string
+        # Check for existence of '{xss}' injection point in URL string
         if "{xss}" not in arguments.URL:
             print Color.RED + "Please provide the '{xss}' placeholder for" + \
                 " injection point in the URL" + Color.END
