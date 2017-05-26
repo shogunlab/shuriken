@@ -33,6 +33,10 @@ If you would like to screenshot and save all reflected XSS payloads, use the *--
 
 `python shuriken_xss.py -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt" --screen ExampleTarget`
 
+To wait a specific amount of time in between requests, use the *-t* flag with the amount of time to wait in seconds and enter:
+
+`python shuriken_xss.py -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt" -t 1.5
+
 **You must specify a payload and URL**, if you don't then you'll get an error. For an example payload to test with, check out this list of [common XSS payloads](https://github.com/foospidy/payloads/blob/master/owasp/fuzzing_code_database/xss/common.txt).
 
 ## Third party libraries and dependencies
@@ -42,7 +46,7 @@ This tool depends on the proper configuration and installation of the following:
 - [PhantomJS](http://phantomjs.org/download.html) - Headless WebKit browser used by Splinter for testing.
 - [Selenium 2.0](http://www.seleniumhq.org/docs/03_webdriver.jsp) - WebDriver required by PhantomJS browser.
 
-If you would prefer that this tool ***use a different browser for testing***, you can read the [Splinter docs](https://splinter.readthedocs.io/en/latest/#drivers) and insert your preferred browser in the "inject_payload" method on line 41 where it says `browser = Browser("phantomjs")`. Leaving it blank as `browser = Browser()` will default to Firefox.
+If you would prefer that this tool ***use a different browser for testing***, you can read the [Splinter docs](https://splinter.readthedocs.io/en/latest/#drivers) and insert your preferred browser in the "inject_payload" method where it says `browser = Browser("phantomjs")`. Leaving it blank as `browser = Browser()` will default to Firefox.
 
 ## Screenshots
 Basic usage
