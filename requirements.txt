@@ -1,0 +1,2 @@
+splinter==0.7.5
+selenium==3.4.3
