@@ -46,6 +46,8 @@ This tool depends on the proper configuration and installation of the following:
 - [PhantomJS](http://phantomjs.org/download.html) - Headless WebKit browser used by Splinter for testing.
 - [Selenium 2.0](http://www.seleniumhq.org/docs/03_webdriver.jsp) - WebDriver required by PhantomJS browser.
 
+Python dependencies can be installed using pip: `pip install -r requirements.txt`. Use your platform-specific mechanism to install PhatomJS (e.g. `brew` on OSX, `apt-get` on Debian or Ubuntu, etc). 
+
 If you would prefer that this tool ***use a different browser for testing***, you can read the [Splinter docs](https://splinter.readthedocs.io/en/latest/#drivers) and insert your preferred browser in the "inject_payload" method where it says `browser = Browser("phantomjs")`. Leaving it blank as `browser = Browser()` will default to Firefox.
 
 ## Screenshots
