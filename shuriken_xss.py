@@ -33,6 +33,10 @@ class Shuriken:
         # Get user args and store
         self.user_args = self.parse_args()
 
+        # Keep index of screens, so they can be easily
+        # linked to line nums in log
+        self.screen_index = str(len(self.xss_links) + 1)
+
         # PhantomJS browser
         self.browser = Browser("phantomjs")
 
@@ -91,33 +95,36 @@ class Shuriken:
 
         browser.visit(injected_link)
 
-        # Keep index of screens, so they can be easily
-        # linked to line nums in log
-        self.screen_index = str(len(self.xss_links) + 1)
-
         # Check to see if payload was reflected in HTML source
-        if payload in browser.html:
+        print self.detect_xss(payload, browser, screenshot_target, injected_link)
+    
+    def detect_xss(self, payload, browser_object, screenshot_target, injected_link):
+        # Check to see if payload was reflected in HTML source
+        if payload in browser_object.html_source:
             print Color.GREEN + "\n[+] Potential XSS vulnerability found:" + \
                 Color.END
-            # If user set the --screen flag to target, capture screen of
+            # If user set the --screen flag to target, capture screenshot of
             # payload
             if screenshot_target is not None:
-                # Check if screenshots directory exists, if not then create it
-                self.make_sure_path_exists("screenshots")
-                screenshot_file_name = "screenshots/" + \
-                    screenshot_target + "_" + \
-                    datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + \
-                    "_" + self.screen_index + ".png"
-                # Save screenshot to directory
-                browser.driver.save_screenshot(screenshot_file_name)
-                print Color.YELLOW + "Screenshot saved: " + \
-                    screenshot_file_name + Color.END
+                self.take_screenshot(screenshot_target, browser_object)
             # Add link to list of all positive XSS hits
             self.xss_links.append(injected_link)
             return Color.BLUE + injected_link + Color.END
         else:
             return Color.YELLOW + "\n[+] Tested, but no XSS found at: \n" + \
                 Color.RED + injected_link + Color.END
+    
+    def take_screenshot(self, screenshot_target, browser_object):
+        # Check if screenshots directory exists, if not then create it
+        self.make_sure_path_exists("screenshots")
+        screenshot_file_name = "screenshots/" + \
+            screenshot_target + "_" + \
+            datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + \
+            "_" + self.screen_index + ".png"
+        # Save screenshot to directory
+        browser_object.driver.save_screenshot(screenshot_file_name)
+        print Color.YELLOW + "Screenshot saved: " + \
+            screenshot_file_name + Color.END
 
     def test_xss(self, payloads_param, link, request_delay, screenshot_target):
         # If the user added time delay, show them what it is set to.
@@ -128,8 +135,8 @@ class Shuriken:
         # Load the payload file and inject all payloads
         # into user supplied URL to test for XSS
         payloads = []
-        with open(payloads_param) as file:
-            for line in file:
+        with open(payloads_param) as payload_file:
+            for line in payload_file:
                 line = line.strip()
                 payloads.append(line)
         for item in payloads:
