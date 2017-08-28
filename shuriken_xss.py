@@ -30,12 +30,11 @@ class Shuriken:
         # All potential XSS findings
         self.xss_links = []
 
+        # Keep index of screens for log files
+        self.screen_index = ""
+
         # Get user args and store
         self.user_args = self.parse_args()
-
-        # Keep index of screens, so they can be easily
-        # linked to line nums in log
-        self.screen_index = str(len(self.xss_links) + 1)
 
         # PhantomJS browser
         self.browser = Browser("phantomjs")
@@ -95,12 +94,17 @@ class Shuriken:
 
         browser.visit(injected_link)
 
-        # Check to see if payload was reflected in HTML source
-        print self.detect_xss(payload, browser, screenshot_target, injected_link)
+        # Keep index of screens, so they can be easily
+        # linked to line nums in log
+        self.screen_index = str(len(self.xss_links) + 1)
+
+        # Check to see if payload was reflected in HTML source, 
+        # if so, take screenshot depending on user flag
+        self.detect_xss(payload, browser, screenshot_target, injected_link)
     
     def detect_xss(self, payload, browser_object, screenshot_target, injected_link):
         # Check to see if payload was reflected in HTML source
-        if payload in browser_object.html_source:
+        if payload in browser_object.html:
             print Color.GREEN + "\n[+] Potential XSS vulnerability found:" + \
                 Color.END
             # If user set the --screen flag to target, capture screenshot of
@@ -109,9 +113,9 @@ class Shuriken:
                 self.take_screenshot(screenshot_target, browser_object)
             # Add link to list of all positive XSS hits
             self.xss_links.append(injected_link)
-            return Color.BLUE + injected_link + Color.END
+            print Color.BLUE + injected_link + Color.END
         else:
-            return Color.YELLOW + "\n[+] Tested, but no XSS found at: \n" + \
+            print Color.YELLOW + "\n[+] Tested, but no XSS found at: \n" + \
                 Color.RED + injected_link + Color.END
     
     def take_screenshot(self, screenshot_target, browser_object):
@@ -140,7 +144,7 @@ class Shuriken:
                 line = line.strip()
                 payloads.append(line)
         for item in payloads:
-            print self.inject_payload(item, link, request_delay,
+            self.inject_payload(item, link, request_delay,
                                       screenshot_target)
 
     def log_file(self, link_list):
@@ -155,14 +159,14 @@ class Shuriken:
             file_name = "logs/" + target_name + "_" + \
                 datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + \
                 ".txt"
-            with open(file_name, 'w') as file:
+            with open(file_name, 'w') as link_file:
                 for link in link_list:
-                    file.write(link)
-                    file.write("\n")
+                    link_file.write(link)
+                    link_file.write("\n")
                 # Add metadata about what payload file was used
-                file.write("\n*** Created from the payload file >>> " +
+                link_file.write("\n*** Created from the payload file >>> " +
                            self.user_args.PAYLOADS_LIST)
-                file.close()
+                link_file.close()
             print "\nFile successfully saved as: " + \
                 Color.BLUE + file_name + Color.END
             print "\n"
