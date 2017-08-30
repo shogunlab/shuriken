@@ -52,8 +52,7 @@ class Shuriken:
                       self.user_args.SCREENSHOT_NAME)
         print Color.GREEN + "\n=== Testing complete! ===\n" + Color.END
 
-        # If the test found possible XSS vulnerabilities, ask if we should
-        # log
+        # If the test found possible XSS vulnerabilities, ask if we should log
         if self.xss_links:
             print Color.YELLOW + \
                 "Potential XSS vulnerabilities were detected!" + \
@@ -102,15 +101,17 @@ class Shuriken:
         # if so, take screenshot depending on user flag
         self.detect_xss(payload, browser, screenshot_target, injected_link)
     
-    def detect_xss(self, payload, browser_object, screenshot_target, injected_link):
+    def detect_xss(self, payload, browser_object, user_screenshot_name, injected_link):
         # Check to see if payload was reflected in HTML source
         if payload in browser_object.html:
             print Color.GREEN + "\n[+] Potential XSS vulnerability found:" + \
                 Color.END
+
             # If user set the --screen flag to target, capture screenshot of
             # payload
-            if screenshot_target is not None:
-                self.take_screenshot(screenshot_target, browser_object)
+            if user_screenshot_name is not None:
+                self.take_screenshot(user_screenshot_name, browser_object)
+
             # Add link to list of all positive XSS hits
             self.xss_links.append(injected_link)
             print Color.BLUE + injected_link + Color.END
@@ -118,11 +119,11 @@ class Shuriken:
             print Color.YELLOW + "\n[+] Tested, but no XSS found at: \n" + \
                 Color.RED + injected_link + Color.END
     
-    def take_screenshot(self, screenshot_target, browser_object):
+    def take_screenshot(self, screenshot_target_name, browser_object):
         # Check if screenshots directory exists, if not then create it
         self.make_sure_path_exists("screenshots")
         screenshot_file_name = "screenshots/" + \
-            screenshot_target + "_" + \
+            screenshot_target_name + "_" + \
             datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + \
             "_" + self.screen_index + ".png"
         # Save screenshot to directory
