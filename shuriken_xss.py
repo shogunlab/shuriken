@@ -1,5 +1,5 @@
 # !/usr/bin/env python
-"""Set environment."""
+"""Set Python environment."""
 
 import argparse
 import datetime
@@ -110,7 +110,7 @@ class Shuriken:
     def detect_xss(self, payload, browser_object, user_screenshot_name,
                    injected_link):
         """Check the HTML source to determine if XSS payload was reflected."""
-        if payload in browser_object.html:
+        if payload.lower() in browser_object.html.lower():
             print Color.GREEN + "\n[+] Potential XSS vulnerability found:" + \
                 Color.END
 
