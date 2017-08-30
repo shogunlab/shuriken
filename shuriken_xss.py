@@ -72,7 +72,8 @@ class Shuriken:
             if exception.errno != errno.EEXIST:
                 raise
 
-    def inject_payload(self, payload, link, request_delay, screenshot_target):
+    def inject_payload(self, payload, link, request_delay,
+                       user_screenshot_name):
         # Visit user supplied link with injected payload
         browser = self.browser
 
@@ -99,10 +100,9 @@ class Shuriken:
 
         # Check to see if payload was reflected in HTML source,
         # if so, take screenshot depending on user flag
-        self.detect_xss(payload, browser, screenshot_target, injected_link)
+        self.detect_xss(payload, browser, user_screenshot_name, injected_link)
 
-    def detect_xss(self, payload, browser_object,
-                   user_screenshot_name,
+    def detect_xss(self, payload, browser_object, user_screenshot_name,
                    injected_link):
         # Check to see if payload was reflected in HTML source
         if payload in browser_object.html:
@@ -121,11 +121,11 @@ class Shuriken:
             print Color.YELLOW + "\n[+] Tested, but no XSS found at: \n" + \
                 Color.RED + injected_link + Color.END
 
-    def take_screenshot(self, screenshot_target_name, browser_object):
+    def take_screenshot(self, user_screenshot_name, browser_object):
         # Check if screenshots directory exists, if not then create it
         self.make_sure_path_exists("screenshots")
         screenshot_file_name = "screenshots/" + \
-            screenshot_target_name + "_" + \
+            user_screenshot_name + "_" + \
             datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + \
             "_" + self.screen_index + ".png"
         # Save screenshot to directory
@@ -133,7 +133,8 @@ class Shuriken:
         print Color.YELLOW + "Screenshot saved: " + \
             screenshot_file_name + Color.END
 
-    def test_xss(self, payloads_param, link, request_delay, screenshot_target):
+    def test_xss(self, payloads_param, link, request_delay,
+                 user_screenshot_name):
         # If the user added time delay, show them what it is set to.
         if request_delay is not None:
             print Color.YELLOW + "\n[!] Request delay is set to [" + \
@@ -147,7 +148,8 @@ class Shuriken:
                 line = line.strip()
                 payloads.append(line)
         for item in payloads:
-            self.inject_payload(item, link, request_delay, screenshot_target)
+            self.inject_payload(item, link, request_delay,
+                                user_screenshot_name)
 
     def log_file(self, link_list):
         # Prompt the user to confirm log file, if yes, log XSS hits
