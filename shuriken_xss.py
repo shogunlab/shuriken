@@ -1,5 +1,6 @@
 # !/usr/bin/env python
-# -*- coding: utf-8 -*-
+"""Set environment for Python code."""
+
 
 import argparse
 import datetime
@@ -12,7 +13,8 @@ from splinter import Browser
 
 
 class Color:
-    # Use colors to make command line output prettier
+    """Use colors to make command line output prettier."""
+
     RED = '\033[91m'
     GREEN = '\033[92m'
     YELLOW = '\033[93m'
@@ -21,8 +23,10 @@ class Color:
 
 
 class Shuriken:
+    """Object for testing lists of XSS payloads."""
 
     def __init__(self):
+        """Initiate object with default encoding and other required data."""
         # Expect some weird characters from fuzz lists, make encoding UTF-8
         reload(sys)
         sys.setdefaultencoding('utf8')
@@ -40,6 +44,7 @@ class Shuriken:
         self.browser = Browser("phantomjs")
 
     def main(self):
+        """Call functions to inject XSS and test for vulnerabilities."""
         # Print out a welcome message
         print "\n"
         print "=" * 34 + Color.YELLOW + "\nWelcome to the" + Color.RED + \
@@ -66,6 +71,7 @@ class Shuriken:
             print "\n"
 
     def make_sure_path_exists(self, path):
+        """Ensure that file path exists before writing."""
         try:
             os.makedirs(path)
         except OSError as exception:
@@ -74,7 +80,7 @@ class Shuriken:
 
     def inject_payload(self, payload, link, request_delay,
                        user_screenshot_name):
-        # Visit user supplied link with injected payload
+        """Inject XSS payload string from user supplied payload list."""
         browser = self.browser
 
         # Let user specify where in the URL fuzz values should be injected
@@ -104,7 +110,7 @@ class Shuriken:
 
     def detect_xss(self, payload, browser_object, user_screenshot_name,
                    injected_link):
-        # Check to see if payload was reflected in HTML source
+        """Check the HTML source to determine if XSS payload was reflected."""
         if payload in browser_object.html:
             print Color.GREEN + "\n[+] Potential XSS vulnerability found:" + \
                 Color.END
@@ -122,6 +128,7 @@ class Shuriken:
                 Color.RED + injected_link + Color.END
 
     def take_screenshot(self, user_screenshot_name, browser_object):
+        """Take a screenshot of the page in the browser object."""
         # Check if screenshots directory exists, if not then create it
         self.make_sure_path_exists("screenshots")
         screenshot_file_name = "screenshots/" + \
@@ -135,6 +142,7 @@ class Shuriken:
 
     def test_xss(self, payloads_param, link, request_delay,
                  user_screenshot_name):
+        """Load string from payload list and call function to inject it."""
         # If the user added time delay, show them what it is set to.
         if request_delay is not None:
             print Color.YELLOW + "\n[!] Request delay is set to [" + \
@@ -152,6 +160,7 @@ class Shuriken:
                                 user_screenshot_name)
 
     def log_file(self, link_list):
+        """Log successful XSS payload reflections to file."""
         # Prompt the user to confirm log file, if yes, log XSS hits
         log_confirm = raw_input(
             "\nWould you like to save these results? [y/n] > ")
@@ -179,7 +188,7 @@ class Shuriken:
             print "\n"
 
     def parse_args(self):
-        # Parse arguments from the user sent on command line
+        """Parse arguments from the user sent on command line."""
         parser = argparse.ArgumentParser()
         parser.add_argument(
             '-u', action='store', dest='URL',
