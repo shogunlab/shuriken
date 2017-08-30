@@ -1,6 +1,5 @@
 # !/usr/bin/env python
-"""Set environment for Python code."""
-
+"""Set environment."""
 
 import argparse
 import datetime
