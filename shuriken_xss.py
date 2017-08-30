@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import argparse
@@ -97,11 +97,13 @@ class Shuriken:
         # linked to line nums in log
         self.screen_index = str(len(self.xss_links) + 1)
 
-        # Check to see if payload was reflected in HTML source, 
+        # Check to see if payload was reflected in HTML source,
         # if so, take screenshot depending on user flag
         self.detect_xss(payload, browser, screenshot_target, injected_link)
-    
-    def detect_xss(self, payload, browser_object, user_screenshot_name, injected_link):
+
+    def detect_xss(self, payload, browser_object,
+                   user_screenshot_name,
+                   injected_link):
         # Check to see if payload was reflected in HTML source
         if payload in browser_object.html:
             print Color.GREEN + "\n[+] Potential XSS vulnerability found:" + \
@@ -118,7 +120,7 @@ class Shuriken:
         else:
             print Color.YELLOW + "\n[+] Tested, but no XSS found at: \n" + \
                 Color.RED + injected_link + Color.END
-    
+
     def take_screenshot(self, screenshot_target_name, browser_object):
         # Check if screenshots directory exists, if not then create it
         self.make_sure_path_exists("screenshots")
@@ -145,8 +147,7 @@ class Shuriken:
                 line = line.strip()
                 payloads.append(line)
         for item in payloads:
-            self.inject_payload(item, link, request_delay,
-                                      screenshot_target)
+            self.inject_payload(item, link, request_delay, screenshot_target)
 
     def log_file(self, link_list):
         # Prompt the user to confirm log file, if yes, log XSS hits
@@ -166,7 +167,7 @@ class Shuriken:
                     link_file.write("\n")
                 # Add metadata about what payload file was used
                 link_file.write("\n*** Created from the payload file >>> " +
-                           self.user_args.PAYLOADS_LIST)
+                                self.user_args.PAYLOADS_LIST)
                 link_file.close()
             print "\nFile successfully saved as: " + \
                 Color.BLUE + file_name + Color.END
