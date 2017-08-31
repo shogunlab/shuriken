@@ -50,7 +50,9 @@ The default matching score supplied is 50% and will be applied when a flag with 
 
 `python shuriken_xss.py -f -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt"`
 
-Partial detection is applied through the use of SeatGeek's [FuzzyWuzzy](https://github.com/seatgeek/fuzzywuzzy) Python library `token_set_ratio()` method and additional information regarding this library can be found [here](http://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/). Partial XSS reflections will be logged in a separate file ending with "_partials.txt".
+Partial detection is applied through the use of SeatGeek's [FuzzyWuzzy](https://github.com/seatgeek/fuzzywuzzy) Python library `token_set_ratio()` method and additional information regarding this library can be found [here](http://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/). 
+
+Partial XSS reflections will be logged in a separate text file ending with "_partials.txt".
 
 ### Misc. usage notes
 
