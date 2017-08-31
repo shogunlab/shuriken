@@ -67,6 +67,7 @@ class Shuriken:
                 "XSS vulnerabilities were detected!" + \
                 Color.END
             self.log_file(self.xss_links)
+        # There were partials detected by fuzzy detection
         elif self.xss_partials:
             print Color.YELLOW + \
                 "Partial XSS vulnerabilities were detected!" + \
@@ -194,17 +195,20 @@ class Shuriken:
             target_name = raw_input("Please enter the target name > ")
             # Check if logs directory exists, if not then create it
             self.make_sure_path_exists("logs")
-            # Save log file to directory
+            # Set file name
             file_name = "logs/" + target_name + "_" + \
                 datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-            with open(file_name + ".txt", 'w') as link_file:
-                for link in link_list:
-                    link_file.write(link)
-                    link_file.write("\n")
-                # Add metadata about what payload file was used
-                link_file.write("\n*** Created from the payload file >>> " +
-                                self.user_args.PAYLOADS_LIST)
-                link_file.close()
+            # Save log file to directory if XSS links is populated
+            if self.xss_links:
+                with open(file_name + ".txt", 'w') as link_file:
+                    for link in link_list:
+                        link_file.write(link)
+                        link_file.write("\n")
+                    # Add metadata about what payload file was used
+                    link_file.write(
+                        "\n*** Created from the payload file >>> " +
+                        self.user_args.PAYLOADS_LIST)
+                    link_file.close()
             # If the user enabled fuzzy detection, log partial results
             if (self.user_args.FUZZY_DETECTION):
                 with open(file_name + "_partials.txt", 'w') as partial_file:
@@ -214,8 +218,7 @@ class Shuriken:
                     # Add metadata about what payload file was used
                     partial_file.write(
                         "\n*** Created from the payload file >>> " +
-                        self.user_args.PAYLOADS_LIST
-                    )
+                        self.user_args.PAYLOADS_LIST)
                     partial_file.close()
             print "\nFile successfully saved as: " + \
                 Color.BLUE + file_name + Color.END
