@@ -252,7 +252,7 @@ class Shuriken:
         parser.add_argument(
             '-f', "--fuzzy", action='store', dest='FUZZY_DETECTION', type=int,
             const=50, nargs="?",
-            help='Fuzzy detection rate of XSS [0 to 100% match] (default=50).')
+            help='Fuzzy detection rate of XSS [0 to 100 match] (default=50).')
 
         arguments = parser.parse_args()
 
