@@ -1,5 +1,6 @@
 # !/usr/bin/env python
 """Set Python environment."""
+# -*- coding: utf-8 -*-
 
 import argparse
 import datetime
@@ -9,6 +10,7 @@ import sys
 import time
 
 from splinter import Browser
+from fuzzywuzzy import fuzz
 
 
 class Color:
@@ -32,6 +34,9 @@ class Shuriken:
 
         # All potential XSS findings
         self.xss_links = []
+
+        # Fuzzy string matching partials list
+        self.xss_partials = []
 
         # Keep index of screens for log files
         self.screen_index = ""
@@ -59,7 +64,12 @@ class Shuriken:
         # If the test found possible XSS vulnerabilities, ask if we should log
         if self.xss_links:
             print Color.YELLOW + \
-                "Potential XSS vulnerabilities were detected!" + \
+                "XSS vulnerabilities were detected!" + \
+                Color.END
+            self.log_file(self.xss_links)
+        elif self.xss_partials:
+            print Color.YELLOW + \
+                "Partial XSS vulnerabilities were detected!" + \
                 Color.END
             self.log_file(self.xss_links)
         else:
@@ -110,30 +120,45 @@ class Shuriken:
     def detect_xss(self, payload, browser_object, user_screenshot_name,
                    injected_link):
         """Check the HTML source to determine if XSS payload was reflected."""
+        partial_score = fuzz.token_set_ratio(
+            payload.lower(), browser_object.html.lower())
+
+        fuzzy_level = self.user_args.FUZZY_DETECTION
+
         if payload.lower() in browser_object.html.lower():
-            print Color.GREEN + "\n[+] Potential XSS vulnerability found:" + \
+            print Color.GREEN + "\n[+] XSS vulnerability found:" + \
                 Color.END
 
             # If user set the --screen flag to target, capture screenshot of
             # payload
             if user_screenshot_name is not None:
-                self.take_screenshot(user_screenshot_name, browser_object)
+                self.take_screenshot(user_screenshot_name,
+                                     browser_object, self.screen_index)
 
             # Add link to list of all positive XSS hits
             self.xss_links.append(injected_link)
             print Color.BLUE + injected_link + Color.END
+        elif fuzzy_level and (partial_score >= fuzzy_level):
+            print Color.YELLOW + \
+                "\n[-] Partial XSS vulnerability found:" + Color.END
+            print Color.BLUE + injected_link + Color.END
+            self.xss_partials.append(injected_link)
+            print "Detection score: %s" % partial_score
         else:
-            print Color.YELLOW + "\n[+] Tested, but no XSS found at: \n" + \
-                Color.RED + injected_link + Color.END
+            print Color.RED + "\n[+] No XSS detected at: \n" + \
+                Color.BLUE + injected_link + Color.END
+            if (fuzzy_level):
+                print "Detection score: %s" % partial_score
 
-    def take_screenshot(self, user_screenshot_name, browser_object):
+    def take_screenshot(self, user_screenshot_name, browser_object,
+                        screen_index):
         """Take a screenshot of the page in the browser object."""
         # Check if screenshots directory exists, if not then create it
         self.make_sure_path_exists("screenshots")
         screenshot_file_name = "screenshots/" + \
             user_screenshot_name + "_" + \
             datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + \
-            "_" + self.screen_index + ".png"
+            "_" + screen_index + ".png"
         # Save screenshot to directory
         browser_object.driver.save_screenshot(screenshot_file_name)
         print Color.YELLOW + "Screenshot saved: " + \
@@ -169,9 +194,8 @@ class Shuriken:
             self.make_sure_path_exists("logs")
             # Save log file to directory
             file_name = "logs/" + target_name + "_" + \
-                datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + \
-                ".txt"
-            with open(file_name, 'w') as link_file:
+                datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+            with open(file_name + ".txt", 'w') as link_file:
                 for link in link_list:
                     link_file.write(link)
                     link_file.write("\n")
@@ -179,6 +203,18 @@ class Shuriken:
                 link_file.write("\n*** Created from the payload file >>> " +
                                 self.user_args.PAYLOADS_LIST)
                 link_file.close()
+            # If the user enabled fuzzy detection, log partial results
+            if (self.user_args.FUZZY_DETECTION):
+                with open(file_name + "_partials.txt", 'w') as partial_file:
+                    for link in self.xss_partials:
+                        partial_file.write(link)
+                        partial_file.write("\n")
+                    # Add metadata about what payload file was used
+                    partial_file.write(
+                        "\n*** Created from the payload file >>> " +
+                        self.user_args.PAYLOADS_LIST
+                    )
+                    partial_file.close()
             print "\nFile successfully saved as: " + \
                 Color.BLUE + file_name + Color.END
             print "\n"
@@ -191,16 +227,20 @@ class Shuriken:
         parser = argparse.ArgumentParser()
         parser.add_argument(
             '-u', action='store', dest='URL',
-            help='The URL to analyze', required=True)
+            help='The URL to inject XSS payloads into.', required=True)
         parser.add_argument(
             '-p', action='store', dest='PAYLOADS_LIST',
-            help='The payload list to use', required=True)
+            help='The payload list to use for injection.', required=True)
         parser.add_argument(
             '-t', action='store', dest='REQUEST_DELAY',
-            help='Amount of time in seconds to delay between requests')
+            help='Amount of time (in seconds) to delay between requests.')
         parser.add_argument(
             '--screen', action='store', dest='SCREENSHOT_NAME',
-            help='Screens of target')
+            help='Enable screenshots of XSS hits.')
+        parser.add_argument(
+            '-f', "--fuzzy", action='store', dest='FUZZY_DETECTION', type=int,
+            const=50, nargs="?",
+            help='Fuzzy detection rate of XSS [0 to 100% match] (default=50).')
 
         arguments = parser.parse_args()
 
