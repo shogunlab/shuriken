@@ -30,6 +30,8 @@ To test a list of payloads against a target URL, specify where the payloads will
 
 `python shuriken_xss.py -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt"`
 
+### Taking screenshots
+
 If you would like to screenshot and save all reflected XSS payloads, use the *-s* or *--screen* flag with a name for the screenshot images and enter:
 
 `python shuriken_xss.py -s ExampleTarget -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt"`
@@ -38,13 +40,23 @@ To wait a specific amount of time in between requests, use the *-t* flag with th
 
 `python shuriken_xss.py -t 1.5 -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt"`
 
+### Fuzzy XSS payload detection
+
 To enable partial or fuzzy detection of XSS payloads in HTML source code, use the *-f* or *--fuzzy* flag with the level of detection you want to log. For example, the following command will only log XSS payload reflections that have a 75% matching score or above in the HTML source code returned:
 
 `python shuriken_xss.py -f 75 -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt"`
 
-The default matching score supplied is 50% and will be applied when a flag with no number is given (e.g. -f or --fuzzy). Partial detection is applied through the use of SeatGeek's [FuzzyWuzzy](https://github.com/seatgeek/fuzzywuzzy) Python library `token_set_ratio()` method and additional information regarding this library can be found [here](http://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/). Partial XSS reflections will be logged in a separate file ending with "_partials.txt".
+The default matching score supplied is 50% and will be applied when a flag with no number is given (e.g. -f or --fuzzy): 
+
+`python shuriken_xss.py -f -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt"`
+
+Partial detection is applied through the use of SeatGeek's [FuzzyWuzzy](https://github.com/seatgeek/fuzzywuzzy) Python library `token_set_ratio()` method and additional information regarding this library can be found [here](http://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/). Partial XSS reflections will be logged in a separate file ending with "_partials.txt".
+
+### Misc. usage notes
 
 **You must specify a payload and URL**, if you don't then you'll get an error. For an example payload to test with, check out this list of [common XSS payloads](https://github.com/foospidy/payloads/blob/master/owasp/fuzzing_code_database/xss/common.txt).
+
+You also must have PhantomJS installed and configured in order for the tool to run in its default mode. See the next section for more details on this.
 
 ## Third party libraries and dependencies
 This tool depends on the proper configuration and installation of the following:
