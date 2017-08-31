@@ -247,10 +247,10 @@ class Shuriken:
             '-t', action='store', dest='REQUEST_DELAY',
             help='Amount of time (in seconds) to delay between requests.')
         parser.add_argument(
-            '--screen', action='store', dest='SCREENSHOT_NAME',
+            '-s', '--screen', action='store', dest='SCREENSHOT_NAME',
             help='Enable screenshots of XSS hits.')
         parser.add_argument(
-            '-f', "--fuzzy", action='store', dest='FUZZY_DETECTION', type=int,
+            '-f', '--fuzzy', action='store', dest='FUZZY_DETECTION', type=int,
             const=50, nargs="?",
             help='Fuzzy detection rate of XSS [0 to 100 match] (default=50).')
 

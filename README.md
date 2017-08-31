@@ -30,13 +30,13 @@ To test a list of payloads against a target URL, specify where the payloads will
 
 `python shuriken_xss.py -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt"`
 
-If you would like to screenshot and save all reflected XSS payloads, use the *--screen* flag with a name for the screenshot images and enter:
+If you would like to screenshot and save all reflected XSS payloads, use the *-s* or *--screen* flag with a name for the screenshot images and enter:
 
-`python shuriken_xss.py -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt" --screen ExampleTarget`
+`python shuriken_xss.py -s ExampleTarget -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt"`
 
 To wait a specific amount of time in between requests, use the *-t* flag with the amount of time to wait in seconds and enter:
 
-`python shuriken_xss.py -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt" -t 1.5`
+`python shuriken_xss.py -t 1.5 -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt"`
 
 To enable partial or fuzzy detection of XSS payloads in HTML source code, use the *-f* or *--fuzzy* flag with the level of detection you want to log. For example, the following command will only log XSS payload reflections that have a 75% matching score or above in the HTML source code returned:
 
