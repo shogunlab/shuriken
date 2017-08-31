@@ -120,9 +120,9 @@ class Shuriken:
     def detect_xss(self, payload, browser_object, user_screenshot_name,
                    injected_link):
         """Check the HTML source to determine if XSS payload was reflected."""
+        # Set up variables for fuzzy detection and scoring
         partial_score = fuzz.token_set_ratio(
             payload.lower(), browser_object.html.lower())
-
         fuzzy_level = self.user_args.FUZZY_DETECTION
 
         if payload.lower() in browser_object.html.lower():
@@ -138,6 +138,8 @@ class Shuriken:
             # Add link to list of all positive XSS hits
             self.xss_links.append(injected_link)
             print Color.BLUE + injected_link + Color.END
+        # If user enabled fuzzy detection and partial score was larger than
+        # fuzz level, add it to partials list and print results
         elif fuzzy_level and (partial_score >= fuzzy_level):
             print Color.YELLOW + \
                 "\n[-] Partial XSS vulnerability found:" + Color.END
