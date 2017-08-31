@@ -1,2 +1,4 @@
 splinter==0.7.5
 selenium==3.4.3
+fuzzywuzzy==0.15.1
+python-Levenshtein==0.12.0
