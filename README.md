@@ -54,11 +54,13 @@ Partial detection is applied through the use of SeatGeek's [FuzzyWuzzy](https://
 
 Partial XSS reflections will be logged in a separate text file ending with "_partials.txt".
 
-### Misc. usage notes
+### Misc. usage and performance notes
 
 **You must specify a payload and URL**, if you don't then you'll get an error. For an example payload to test with, check out this list of [common XSS payloads](https://github.com/foospidy/payloads/blob/master/owasp/fuzzing_code_database/xss/common.txt).
 
 You also must have PhantomJS installed and configured in order for the tool to run in its default mode. See the next section for more details on this.
+
+**There may be a noticeable slowdown of the tool when it is being used in a virtual machine such as VirtualBox.** For best performance, use Shuriken on a native machine, I am currently looking to address this virtual machine slowdown in a future update.
 
 ## Third party libraries and dependencies
 This tool depends on the proper configuration and installation of the following:
