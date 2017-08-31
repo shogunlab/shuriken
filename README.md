@@ -60,7 +60,7 @@ Partial XSS reflections will be logged in a separate text file ending with "_par
 
 You also must have PhantomJS installed and configured in order for the tool to run in its default mode. See the next section for more details on this.
 
-**There may be a noticeable slowdown of the tool when it is being used in a virtual machine such as VirtualBox.** For best performance, use Shuriken on a native machine, I am currently looking to address this virtual machine slowdown in a future update.
+**There may be a noticeable slowdown of the tool when it is being used in a virtual machine such as VirtualBox.** For best performance, use Shuriken on a native machine. I am currently looking to address this virtual machine slowdown in a future update.
 
 ## Third party libraries and dependencies
 This tool depends on the proper configuration and installation of the following:
