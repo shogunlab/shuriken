@@ -17,8 +17,9 @@ Shuriken works with [Python](http://www.python.org/download/) **2.7.x** on any p
 ## Features
 - Easily specify where in a URL the payload should be injected with the "{xss}" string.
 - Quickly change payload lists.
-- Take screenshots of successful XSS hits.
+- Take screenshots of successful XSS payloads.
 - Save logs of reflected XSS payloads.
+- Use fuzzy detection to log partial XSS reflections.
 
 ## Usage
 To get a list of options and switches, enter:
@@ -37,6 +38,12 @@ To wait a specific amount of time in between requests, use the *-t* flag with th
 
 `python shuriken_xss.py -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt" -t 1.5`
 
+To enable partial or fuzzy detection of XSS payloads in HTML source code, use the *-f* or *--fuzzy* flag with the level of detection you want to log. For example, the following command will only log XSS payload reflections that have a 75% matching score or above in the HTML source code returned:
+
+`python shuriken_xss.py -f 75 -u "http://example.com/target.php?name={xss}" -p "xss-payload-list.txt"`
+
+The default matching score supplied is 50% and will be applied when a flag with no number is given (e.g. -f or --fuzzy). Partial detection is applied through the use of SeatGeek's [FuzzyWuzzy](https://github.com/seatgeek/fuzzywuzzy) Python library `token_set_ratio()` method and additional information regarding this library can be found [here](http://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/). Partial XSS reflections will be logged in a separate file ending with "_partials.txt".
+
 **You must specify a payload and URL**, if you don't then you'll get an error. For an example payload to test with, check out this list of [common XSS payloads](https://github.com/foospidy/payloads/blob/master/owasp/fuzzing_code_database/xss/common.txt).
 
 ## Third party libraries and dependencies
@@ -45,6 +52,8 @@ This tool depends on the proper configuration and installation of the following:
 - [Splinter](https://splinter.readthedocs.io/en/latest/install.html) - Python library allowing use of a headless web browser for testing.
 - [PhantomJS](http://phantomjs.org/download.html) - Headless WebKit browser used by Splinter for testing.
 - [Selenium 2.0](http://www.seleniumhq.org/docs/03_webdriver.jsp) - WebDriver required by PhantomJS browser.
+- [FuzzyWuzzy](https://github.com/seatgeek/fuzzywuzzy) - Partial XSS logging using fuzzy detection methods.
+- [python-Levenshtein](https://pypi.python.org/pypi/python-Levenshtein/0.12.0) - Python extension for computing string edit distances and similarities. Allows faster fuzzy detection from the FuzzyWuzzy library.
 
 Python dependencies can be installed using pip: `pip install -r requirements.txt`. Use your platform-specific mechanism to install PhatomJS (e.g. `brew` on OSX, `apt-get` on Debian or Ubuntu, etc). 
 
