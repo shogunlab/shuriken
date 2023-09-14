@@ -1,0 +1,116 @@
+Metadata-Version: 2.1
+Name: splinter
+Version: 0.19.0
+Summary: browser abstraction for web acceptance testing
+Home-page: https://github.com/cobrateam/splinter
+Author: CobraTeam
+Author-email: andrewsmedina@gmail.com
+License: BSD
+Project-URL: Documentation, https://splinter.readthedocs.io/
+Project-URL: Changelog, https://github.com/cobrateam/splinter/tree/master/docs/news
+Project-URL: Source, https://github.com/cobrateam/splinter/
+Project-URL: Tracker, https://github.com/cobrateam/splinter/issues
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+License-File: LICENSE
+License-File: AUTHORS
+Requires-Dist: urllib3 (<2.0,>=1.26.14)
+Provides-Extra: django
+Requires-Dist: Django (>=2.0.6) ; extra == 'django'
+Requires-Dist: lxml (>=4.2.4) ; extra == 'django'
+Requires-Dist: cssselect ; extra == 'django'
+Provides-Extra: edge
+Requires-Dist: msedge-selenium-tools ; extra == 'edge'
+Provides-Extra: flask
+Requires-Dist: Flask (>=2.0.2) ; extra == 'flask'
+Requires-Dist: lxml (>=4.2.4) ; extra == 'flask'
+Requires-Dist: cssselect ; extra == 'flask'
+Provides-Extra: selenium3
+Requires-Dist: selenium (<4.0,>=3.141.0) ; extra == 'selenium3'
+Provides-Extra: selenium4
+Requires-Dist: selenium (<4.2.0,>=4.1.0) ; extra == 'selenium4'
+Provides-Extra: zope.testbrowser
+Requires-Dist: zope.testbrowser (>=5.5.1) ; extra == 'zope.testbrowser'
+Requires-Dist: lxml (>=4.2.4) ; extra == 'zope.testbrowser'
+Requires-Dist: cssselect ; extra == 'zope.testbrowser'
+
+++++++++
+splinter
+++++++++
+
+Splinter is a Python framework that provides a simple and consistent interface for web application automation.
+
+.. image:: https://img.shields.io/pypi/v/splinter.svg
+    :target: https://pypi.org/project/splinter
+    :alt: PyPI
+
+.. image:: https://img.shields.io/pypi/pyversions/splinter.svg
+    :alt: PyPI - Python Version
+    :target: https://github.com/cobrateam/splinter
+
+.. image:: https://img.shields.io/github/license/cobrateam/splinter.svg
+   :alt: GitHub
+   :target: https://github.com/cobrateam/splinter/blob/master/LICENSE
+
+.. image:: https://github.com/cobrateam/splinter/workflows/CI/badge.svg
+   :target: https://github.com/cobrateam/splinter/actions/workflows/main.yml
+   :alt: Build status
+
+
+* `Documentation <https://splinter.readthedocs.io>`_
+
+* `Changelog <https://splinter.readthedocs.io/en/latest/news.html>`_
+
+Key features:
+
+- Easy to learn: The API is designed to be intuitive and quick to pick up.
+- Faster to code: Automate browser interactions quickly and reliably without fighting the tool.
+- Powerful: Designed for real world use cases, it guards against common automation quirks.
+- Flexible: Access to lower level tools is never hidden. Break out into raw Selenium at any time.
+- Robust: Support is available for multiple automation drivers (Selenium, Django, Flask, ZopeTestBrowser).
+
+Example
+-------
+
+.. code:: python
+
+   from splinter import Browser
+
+
+   browser = Browser('firefox')
+   browser.visit('http://google.com')
+   browser.find_by_name('q').fill('splinter - python acceptance testing for web applications')
+   browser.find_by_name('btnK').click()
+
+   if browser.is_text_present('splinter.readthedocs.io'):
+       print("Yes, the official website was found!")
+   else:
+       print("No, it wasn't found... We need to improve our SEO techniques")
+
+   browser.quit()
+
+
+Getting Started
+===============
+
+* `Installation <https://splinter.readthedocs.io/en/latest/install.html>`_
+
+* `Tutorial <https://splinter.readthedocs.io/en/latest/tutorial.html>`_
+
+
+Pytest Plugins
+==============
+
+* `pytest-splinter <http://pytest-splinter.readthedocs.io>`_, Splinter plugin for the `py.test <http://docs.pytest.org>`_ runner.
+
+
+Page Objects
+============
+
+Support for page objects is available through the following package:
+
+* `Stere <https://stere.readthedocs.io/>`_
