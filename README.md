@@ -12,8 +12,6 @@ Shuriken can be installed by downloading the zip file [here](https://github.com/
 
 `git clone https://github.com/shogunlab/shuriken.git`
 
-Shuriken works with [Python](http://www.python.org/download/) **2.7.x** on any platform.
-
 ## Features
 - Easily specify where in a URL the payload should be injected with the "{xss}" string.
 - Quickly change payload lists.
