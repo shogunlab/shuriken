@@ -60,7 +60,6 @@ You also must have PhantomJS installed and configured in order for the tool to r
 
 ## Third party libraries and dependencies
 This tool depends on the proper configuration and installation of the following:
-- [Python 2.7.x](https://www.python.org/downloads/) - Python 2 is needed to run the tool.
 - [Splinter](https://splinter.readthedocs.io/en/latest/install.html) - Python library allowing use of a headless web browser for testing.
 - [PhantomJS](http://phantomjs.org/download.html) - Headless WebKit browser used by Splinter for testing.
 - [Selenium 2.0](http://www.seleniumhq.org/docs/03_webdriver.jsp) - WebDriver required by PhantomJS browser.
