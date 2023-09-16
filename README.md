@@ -1,8 +1,6 @@
 # Shuriken | 手裏剣
 ![logo](https://i.imgur.com/Jr3rbL0.png "Shuriken Logo")
 
-[![python](https://img.shields.io/badge/python-2.7-brightgreen.svg)](https://www.python.org/downloads/) [![license](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/shogunlab/shuriken/blob/master/LICENSE.md) [![twitter](https://img.shields.io/badge/twitter-%40shogun__lab-0084b4.svg)](https://twitter.com/shogun_lab)
-
 Shuriken was developed by [Shogun Lab](http://www.shogunlab.com/) as an open source [Cross-Site Scripting](https://en.wikipedia.org/wiki/Cross-site_scripting) (XSS) command line utility to aid web security researchers who want to test a list of XSS payloads in a web application. It allows a tester to easily change payload lists, log results and take screenshots of successful payloads. 
 
 It should only be used on valid targets who have consented to pentesting, **please ensure you have permission** before using this tool against a web application.
